@@ -1932,7 +1932,12 @@ function zlibBuffer(engine, buffer, callback) {
 function zlibBufferSync(engine, buffer) {
   if (typeof buffer === 'string') buffer = Buffer.from(buffer);
 
-  if (!Buffer.isBuffer(buffer)) throw new TypeError('Not a string or buffer');
+  if (global.Buffer && typeof global.Buffer.isBuffer === 'function') {
+    if(!global.Buffer.isBuffer(buffer)){
+      throw new TypeError('Not a string or buffer');
+    }
+  }
+  // if (!Buffer.isBuffer(buffer)) throw new TypeError('Not a string or buffer');
 
   var flushFlag = engine._finishFlushFlag;
 
